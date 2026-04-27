@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { limit } from "./constant.js";
-
+import { userRouter } from "./routes/user.routes.js";
 const app = express();
 
 app.use(
@@ -29,5 +29,5 @@ app.use(express.static("public"));
 
 app.use(cookieParser());
 
+app.use("/api/v1/user", userRouter);
 export { app };
- 
