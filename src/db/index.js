@@ -7,6 +7,8 @@ export const db_connect = async () => {
       `${process.env.MONGODB_URI}/${db_name}`
     );
 
+    console.log(connectionInstance);
+
     console.log(
       `Database connected || DB HOST : ${connectionInstance.connection.host}`
     );
