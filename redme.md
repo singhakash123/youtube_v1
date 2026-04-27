@@ -8,3 +8,7 @@ git push -u origin main
 I6Z7tIIgZHsChQsN
 
 mongodb+srv://akashlife2004_db_user:I6Z7tIIgZHsChQsN@cluster0.mcishkq.mongodb.net/
+
+## HTTP :
+
+    get , post , put , patch ,delete
