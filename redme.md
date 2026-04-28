@@ -16,3 +16,6 @@ mongodb+srv://akashlife2004_db_user:I6Z7tIIgZHsChQsN@cluster0.mcishkq.mongodb.ne
 ## create collections :
 
 ## share envirment
+
+
+this is the 
