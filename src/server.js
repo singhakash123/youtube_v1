@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
-import { db_connect } from "./db/index.js";
-import { app } from "./app.js";
-
 dotenv.config({
   path: "./.env",
 });
+import { app } from "./app.js";
+import { db_connect } from "./db/index.js";
+
 
 const port = process.env.PORT || 3000;
 db_connect()
@@ -16,3 +16,4 @@ db_connect()
   .catch((err) => {
     console.error(`Database connection failed : ${err.message}`);
   });
+console.log("API KEY:", process.env.CLOUDINARY_API_KEY);

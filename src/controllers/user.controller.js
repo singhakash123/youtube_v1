@@ -7,6 +7,8 @@ import { uploadOnCloudinary } from "../services/cloudinary.js";
 const registerUser = asyncHandler(async (req, res) => {
   const { userName, email, fullName, password } = req.body;
 
+  console.table([userName, email, fullName]);
+
   if (
     [userName, email, fullName, password].some(
       (item) => !item || item.trim() === ""
@@ -30,11 +32,10 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const coverImage = req.files?.coverImage?.[0]?.path;
-
   const avatarUrl = await uploadOnCloudinary(avatarLocal);
 
-  if (!avatarUrl?.url) {
-    throw new ApiError(400, "Avatar upload failed");
+  if (!avatarUrl) {
+    throw new ApiError(400, "Avatar upload failed || cloud");
   }
 
   let coverImageUrl;
@@ -52,6 +53,16 @@ const registerUser = asyncHandler(async (req, res) => {
     avatar: avatarUrl.url,
     coverImage: coverImageUrl || undefined,
   });
+
+  const createUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+  if (!createUser) {
+    throw new ApiError(500, "something went wrong while registering");
+  }
+  return res
+    .status(201)
+    .json(new ApiResponse(200, "user register successFully", createUser));
 });
 
 export { registerUser };
