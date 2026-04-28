@@ -12,3 +12,7 @@ mongodb+srv://akashlife2004_db_user:I6Z7tIIgZHsChQsN@cluster0.mcishkq.mongodb.ne
 ## HTTP :
 
     get , post , put , patch ,delete
+
+## create collections :
+
+## share envirment
