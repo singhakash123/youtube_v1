@@ -17,5 +17,5 @@ mongodb+srv://akashlife2004_db_user:I6Z7tIIgZHsChQsN@cluster0.mcishkq.mongodb.ne
 
 ## share envirment
 
-
-this is the 
+👉 ✔ toObject() = document → plain object
+👉 ✔ modify / sanitize karne ke liye use hota hai
