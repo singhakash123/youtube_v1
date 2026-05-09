@@ -1,17 +1,25 @@
 import express from "express";
+import helmet from "helmet";
 import cors from "cors";
-import cookieParser from "cookie-parser";
+import { config } from "../config/config.js";
 import { limit } from "./constant.js";
-import { userRouter } from "./routes/user.routes.js";
+import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
+
 const app = express();
 
+// security :
+
+app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: config.CORS_ORIGIN,
     credentials: true,
   })
 );
 
+// body parsing :
 app.use(
   express.json({
     limit,
@@ -20,14 +28,32 @@ app.use(
 
 app.use(
   express.urlencoded({
-    extended: true,
     limit,
+    extended: true,
   })
 );
 
-app.use(express.static("public"));
+// static file handling :
+app.use("/public", express.static("public"));
+// rate limit
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: "Too many requests, please try again later",
+});
 
+app.use("/api", limiter);
+
+//cookie-parser :
 app.use(cookieParser());
 
-app.use("/api/v1/user", userRouter);
+//  morgan : this is for the future to track the error of the code to understand the value :
+if (config.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+app.set("trust proxy", 1);
+
 export { app };

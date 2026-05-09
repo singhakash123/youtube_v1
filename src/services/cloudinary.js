@@ -1,58 +1,30 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import { config } from "../../config/config.js";
+import { removeFile } from "../utils/removeFile.js";
 
-let isConfigured = false;
+cloudinary.config({
+  cloud_name: config.CLOUD_NAME,
+  api_key: config.CLOUD_API_KEY,
+  api_secret: config.CLOUD_API_SECRET,
+});
 
-const ensureCloudinary = () => {
-  if (!isConfigured) {
-    console.log("CONFIG KEY:", process.env.CLOUDINARY_API_KEY); // debug
-
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
-
-    isConfigured = true;
-  }
-};
-
-import path from "path";
-
-const removeUploadfile = (filePath) => {
-  const fullPath = path.resolve(filePath);
-
-  if (filePath && fs.existsSync(fullPath)) {
-    fs.unlinkSync(fullPath);
-    console.log("✅ File deleted:", fullPath);
-  } else {
-    console.log("❌ File not found:", fullPath);
-  }
-};
-
-export const uploadOnCloudinary = async function (
-  filePath,
-  foldername = "uploads"
-) {
+export const cloudinaryuploader = async (fileRequest, folderName) => {
   try {
-    ensureCloudinary(); // 👈 yahin config hoga (correct time pe)
-
-    if (!filePath) return null;
-
-    const response = await cloudinary.uploader.upload(filePath, {
+    if (!fileRequest) return null;
+    const response = await cloudinary.uploader.upload(fileRequest, {
+      folder: folderName,
       resource_type: "auto",
-      folder: foldername,
     });
 
-    removeUploadfile(filePath);
+    await removeFile(fileRequest);
 
     return {
       url: response.secure_url,
       public_id: response.public_id,
     };
   } catch (error) {
-    console.log("❌ Cloudinary Error:", error.message);
-    removeUploadfile(filePath);
+    console.error(`File upload failed :   ${error.message}`);
+    await removeFile(fileRequest);
     return null;
   }
 };
