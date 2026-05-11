@@ -6,8 +6,11 @@ import { limit } from "./constant.js";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import { authRouter } from "./routes/auth.routes.js";
 
 const app = express();
+
+app.set("trust proxy", 1);
 
 // security :
 
@@ -54,6 +57,6 @@ if (config.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.set("trust proxy", 1);
-
+// router prefix for the authrouter
+app.use("/api/v1/auth", authRouter);
 export { app };

@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { config } from "../../config/config.js";
 import { removeFile } from "../utils/removeFile.js";
 
+
 cloudinary.config({
   cloud_name: config.CLOUD_NAME,
   api_key: config.CLOUD_API_KEY,
@@ -28,3 +29,5 @@ export const cloudinaryuploader = async (fileRequest, folderName) => {
     return null;
   }
 };
+
+

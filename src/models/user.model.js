@@ -19,7 +19,7 @@ const userSchema = new Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"]
+      // match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"]
     },
     userName: {
       type: String,
@@ -104,7 +104,7 @@ userSchema.methods.toJSON = function () {
 
   delete userObject.password;
   delete userObject.refreshToken;
-
+  delete userObject.__v;
   return userObject;
 };
 
